@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>Career Vision Academy</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101010;color:white;font-family:Arial;padding-bottom:75px}
+header{padding:18px;background:#1c1c1c;border-bottom:2px solid #f5c542;position:sticky;top:0}
+header h2{margin:0;color:#f5c542}
+main{max-width:700px;margin:auto;padding:14px}
+.card{background:#1c1c1c;border:1px solid #444;border-radius:12px;padding:15px;margin:12px 0}
+h3{color:#f5c542}
+input:not([type=radio]),textarea,select{width:100%;padding:12px;margin:7px 0 12px;background:#111;color:white;border:1px solid #555;border-radius:8px}
+textarea{min-height:70px}
+button{padding:11px 14px;margin:4px 2px;border:0;border-radius:8px;background:#f5c542;color:#111;font-weight:bold;cursor:pointer}
+.secondary{background:#444;color:white}
+.danger{background:#a22;color:white}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;overflow-x:auto;background:#1c1c1c}
+nav button{flex:1;min-width:55px;background:#1c1c1c;color:white;border-radius:0;margin:0;font-size:12px}
+nav button.active{color:#f5c542}
+.screen{display:none}.screen.active{display:block}
+.hidden{display:none!important}
+small{color:#bbb}
+a{color:#f5c542;overflow-wrap:anywhere}
+#status{background:#292929;padding:10px;border-radius:8px;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+
+<header>
+<h2>CAREER VISION ACADEMY</h2>
+<small>Kakrala, Badaun, Uttar Pradesh</small>
+</header>
+
+<main>
+<div id="status">Firebase configuration bharna zaroori hai.</div>
+
+<section id="login" class="screen active">
+<div class="card">
+<h3>Student Login / Signup</h3>
+<input id="email" type="email" placeholder="Email address">
+<input id="password" type="password" placeholder="Password (minimum 6 characters)">
+<button id="signup">Create Account</button>
+<button id="loginBtn" class="secondary">Login</button>
+</div>
+</section>
+
+<section id="home" class="screen">
+<div class="card">
+<h2>Welcome to Career Vision Academy</h2>
+<p>Director: Khalid Sir</p>
+<p>Manager: Khalid Sir</p>
+<p>Courses: Class 6–12, JEE, NEET, B.Sc.</p>
+<p>Kakrala, Badaun, Uttar Pradesh</p>
+</div>
+<div class="card">
+<h3>Latest Notice</h3>
+<div id="homeNotice">Abhi koi notice nahi hai.</div>
+</div>
+<div class="card">
+<div id="userInfo"></div>
+<button id="logout" class="secondary">Logout</button>
+</div>
+</section>
+
+<section id="courses" class="screen">
+<h2>Our Courses</h2>
+<div id="courseList"></div>
+</section>
+
+<section id="notices" class="screen">
+<h2>Academy Notices</h2>
+<div id="noticeList"></div>
+</section>
+
+<section id="test" class="screen">
+<h2>Practice Test</h2>
+<div class="card">
+<form id="quiz">
+<p>1. 12 × 5 = ?</p>
+<label><input type="radio" name="q1" value="50" required> 50</label><br>
+<label><input type="radio" name="q1" value="60"> 60</label><br>
+<label><input type="radio" name="q1" value="65"> 65</label>
+<hr>
+<p>2. Water ka chemical formula?</p>
+<label><input type="radio" name="q2" value="CO2" required> CO₂</label><br>
+<label><input type="radio" name="q2" value="H2O"> H₂O</label><br>
+<label><input type="radio" name="q2" value="O2"> O₂</label>
+<hr>
+<p>3. Solar system ka star kaun hai?</p>
+<label><input type="radio" name="q3" value="Moon" required> Moon</label><br>
+<label><input type="radio" name="q3" value="Earth"> Earth</label><br>
+<label><input type="radio" name="q3" value="Sun"> Sun</label><br>
+<button type="submit">Submit Test</button>
+</form>
+</div>
+<div id="myResults"></div>
+</section>
+
+<section id="admin" class="screen">
+<h2>Admin Panel</h2>
+<div class="card">
+<h3>Add Course</h3>
+<form id="courseForm">
+<input id="ctitle" placeholder="Course name" required>
+<select id="ccat">
+<option>Class 6–12</option>
+<option>JEE</option>
+<option>NEET</option>
+<option>B.Sc.</option>
+</select>
+<textarea id="cdesc" placeholder="Course description" required></textarea>
+<input id="clink" type="url" placeholder="Study material URL (optional)">
+<button type="submit">Save Course</button>
+</form>
+</div>
+<div class="card">
+<h3>Publish Notice</h3>
+<form id="noticeForm">
+<input id="ntitle" placeholder="Notice title" required>
+<textarea id="ntext" placeholder="Notice details" required></textarea>
+<button type="submit">Publish Notice</button>
+</form>
+</div>
+<div class="card"><h3>Manage Courses</h3><div id="adminCourses"></div></div>
+<div class="card"><h3>Manage Notices</h3><div id="adminNotices"></div></div>
+<div class="card">
+<h3>Student Results</h3>
+<button id="refresh">Refresh Results</button>
+<div id="allResults"></div>
+</div>
+</section>
+
+<section id="profile" class="screen">
+<div class="card">
+<h3>My Profile</h3>
+<div id="profileInfo"></div>
+<p>Developer: MUEEN</p>
+</div>
+</section>
+</main>
+
+<nav id="nav" class="hidden">
+<button data-page="home">Home</button>
+<button data-page="courses">Courses</button>
+<button data-page="notices">Notices</button>
+<button data-page="test">Tests</button>
+<button data-page="admin" id="adminTab" class="hidden">Admin</button>
+<button data-page="profile">Profile</button>
+</nav>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import {
+ getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
+ signInWithEmailAndPassword,signOut
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import {
+ getFirestore,collection,addDoc,getDocs,deleteDoc,doc,
+ query,where,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+/* Firebase Console se apni Web App config yahan paste karein */
+const firebaseConfig={
+ apiKey:"YOUR_API_KEY",
+ authDomain:"YOUR_PROJECT_ID.firebaseapp.com",
+ projectId:"YOUR_PROJECT_ID",
+ appId:"YOUR_APP_ID"
+};
+
+/* Apna admin email yahan likhein */
+const ADMIN_EMAIL="your-admin-email@example.com";
+
+const $=id=>document.getElementById(id);
+let auth,db,user=null,admin=false;
+
+function say(t){$("status").textContent=t}
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function page(id){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+ $(id)?.classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===id);
+ });
+}
+document.querySelectorAll("[data-page]").forEach(b=>{
+ b.onclick=()=>page(b.dataset.page);
+});
+function checkAdmin(){
+ if(!user||!admin)throw Error("Admin permission nahi hai.");
+}
+
+async function loadCourses(){
+ const s=await getDocs(collection(db,"courses"));
+ const a=s.docs.map(d=>({id:d.id,...d.data()}));
+ const html=a.length?a.map(c=>`
+ <div class="card">
+ <h3>${esc(c.title)}</h3>
+ <small>${esc(c.category)}</small>
+ <p>${esc(c.description)}</p>
+ ${c.link?`<a href="${esc(c.link)}" target="_blank" rel="noopener">Study Material</a>`:""}
+ ${admin?`<br><button class="danger" data-delc="${esc(c.id)}">Delete</button>`:""}
+ </div>`).join(""):"Abhi courses add nahi kiye gaye.";
+ $("courseList").innerHTML=html;
+ $("adminCourses").innerHTML=html;
+ document.querySelectorAll("[data-delc]").forEach(b=>{
+  b.onclick=async()=>{
+   try{
+    checkAdmin();
+    await deleteDoc(doc(db,"courses",b.dataset.delc));
+    await loadCourses();say("Course deleted.");
+   }catch(e){say(e.message)}
+  };
+ });
+}
+
+async function loadNotices(){
+ const s=await getDocs(collection(db,"notices"));
+ const a=s.docs.map(d=>({id:d.id,...d.data()}));
+ const html=a.length?a.map(n=>`
+ <div class="card">
+ <h3>${esc(n.title)}</h3><p>${esc(n.text)}</p>
+ ${admin?`<button class="danger" data-deln="${esc(n.id)}">Delete</button>`:""}
+ </div>`).join(""):"Abhi koi notice nahi hai.";
+ $("noticeList").innerHTML=html;
+ $("adminNotices").innerHTML=html;
+ $("homeNotice").innerHTML=a.length?
+ `<b>${esc(a[0].title)}</b><p>${esc(a[0].text)}</p>`:"Abhi koi notice nahi hai.";
+ document.querySelectorAll("[data-deln]").forEach(b=>{
+  b.onclick=async()=>{
+   try{
+    checkAdmin();
+    await deleteDoc(doc(db,"notices",b.dataset.deln));
+    await loadNotices();say("Notice deleted.");
+   }catch(e){say(e.message)}
+  };
+ });
+}
+
+async function myResults(){
+ const s=await getDocs(query(
+  collection(db,"results"),where("uid","==",user.uid)
+ ));
+ $("myResults").innerHTML="<div class='card'><h3>My Results</h3>"+
+ (s.empty?"Abhi result nahi hai.":s.docs.map(d=>{
+  const r=d.data();
+  return `<p>Score: ${esc(r.score)}/3 — ${esc(r.date)}</p>`;
+ }).join(""))+"</div>";
+}
+
+async function allResults(){
+ checkAdmin();
+ const s=await getDocs(collection(db,"results"));
+ $("allResults").innerHTML=s.empty?"Abhi results nahi hain.":s.docs.map(d=>{
+  const r=d.data();
+  return `<div class="card">${esc(r.email)}<br>
+  Score: ${esc(r.score)}/3 <small>${esc(r.date)}</small></div>`;
+ }).join("");
+}
+
+async function refreshData(){
+ try{
+  await loadCourses();
+  await loadNotices();
+ }catch(e){say("Database error: "+e.message)}
+}
+
+$("signup").onclick=async()=>{
+ try{
+  await createUserWithEmailAndPassword(auth,$("email").value,$("password").value);
+  say("Account created.");
+ }catch(e){say(e.message)}
+};
+$("loginBtn").onclick=async()=>{
+ try{
+  await signInWithEmailAndPassword(auth,$("email").value,$("password").value);
+  say("Login successful.");
+ }catch(e){say(e.message)}
+};
+$("logout").onclick=()=>signOut(auth);
+
+$("courseForm").onsubmit=async e=>{
+ e.preventDefault();
+ try{
+  checkAdmin();
+  await addDoc(collection(db,"courses"),{
+   title:$("ctitle").value.trim(),
+   category:$("ccat").value,
+   description:$("cdesc").value.trim(),
+   link:$("clink").value.trim(),
+   createdAt:serverTimestamp()
+  });
+  e.target.reset();await loadCourses();say("Course added.");
+ }catch(err){say(err.message)}
+};
+
+$("noticeForm").onsubmit=async e=>{
+ e.preventDefault();
+ try{
+  checkAdmin();
+  await addDoc(collection(db,"notices"),{
+   title:$("ntitle").value.trim(),
+   text:$("ntext").value.trim(),
+   createdAt:serverTimestamp()
+  });
+  e.target.reset();await loadNotices();say("Notice published.");
+ }catch(err){say(err.message)}
+};
+
+$("quiz").onsubmit=async e=>{
+ e.preventDefault();
+ try{
+  if(!user)throw Error("Pehle login karein.");
+  const f=new FormData(e.target);
+  const score=Number(f.get("q1")==="60")+
+              Number(f.get("q2")==="H2O")+
+              Number(f.get("q3")==="Sun");
+  await addDoc(collection(db,"results"),{
+   uid:user.uid,email:user.email,score,
+   date:new Date().toLocaleString("en-IN"),
+   createdAt:serverTimestamp()
+  });
+  say("Test submit hua. Score: "+score+"/3");
+  await myResults();
+ }catch(err){say(err.message)}
+};
+$("refresh").onclick=()=>allResults().catch(e=>say(e.message));
+
+try{
+ if(firebaseConfig.apiKey==="YOUR_API_KEY"||
+    firebaseConfig.projectId==="YOUR_PROJECT_ID"){
+  throw Error("Firebase setup karein: firebaseConfig mein apni values bharein.");
+ }
+ const app=initializeApp(firebaseConfig);
+ auth=getAuth(app);
+ db=getFirestore(app);
+
+ onAuthStateChanged(auth,async u=>{
+  user=u;
+  admin=!!u&&u.email?.toLowerCase()===ADMIN_EMAIL.toLowerCase();
+  $("login").classList.toggle("active",!u);
+  $("nav").classList.toggle("hidden",!u);
+  $("adminTab").classList.toggle("hidden",!admin);
+
+  if(!u)return;
+
+  $("userInfo").textContent="Logged in: "+u.email;
+  $("profileInfo").textContent=u.email+(admin?" (Admin)":" (Student)");
+  page("home");
+  say(admin?"Login successful — Admin mode.":"Login successful.");
+  await refreshData();
+  try{await myResults()}catch(e){say("Results: "+e.message)}
+ });
+}catch(e){say(e.message)}
+</script>
+</body>
+</html>
